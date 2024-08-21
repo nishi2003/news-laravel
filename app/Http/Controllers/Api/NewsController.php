@@ -10,21 +10,23 @@ class NewsController extends Controller
 {
     public function list()
     {
-        $newsList = News::select('id', 'title', 'description', 'image')
+        $news = News::select('id', 'title', 'description', 'image')
+            ->where('published', '1')
             ->get();
 
-        return response()->json($newsList);
+        return response()->json($news);
     }
 
     public function show($id)
     {
-        $news = News::find($id);
+        $news = News::where('id', $id)
+                    ->where('published','1')
+                    ->first();
 
         if (!$news) {
-            return response()->json(['error' => 'News not found'], 404);
+            return response()->json(['error' => 'News not found or not published'], 404);
         }
 
         return response()->json($news);
     }
 }
-

@@ -9,3 +9,20 @@
 @else
     <p>Default Value</p>
 @endisset
+
+<!-- resources/views/news/show.blade.php -->
+
+{{-- @extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        @if($news)
+            <h1>{{ $news->title }}</h1>
+            <p>Category: {{ $news->category }}</p>
+            <p>{{ $news->description }}</p>
+        @else
+            <p>News article not found.</p>
+        @endif
+    </div>
+@endsection --}}
+

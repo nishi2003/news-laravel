@@ -27,14 +27,24 @@ class AddnewsMail extends Mailable
         $this->news = $news;
     }
 
+      /**
+     * Get the message envelope.
+     */
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            subject: 'News added',
+        );
+    }
     /**
      * Build the message.
      *
      * @return $this
      */
-    public function build()
+    public function content():content
     {
-        return $this->subject('New News Added')
-                    ->view('emails.news_added');
+        return new Content(view:'emails.news_added',
+        with:['news'=>$this->news],
+    );
     }
 }

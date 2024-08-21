@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AddnewsMail;
 
-
-
 class NewsController extends Controller
 {
     // public function __construct()
@@ -22,22 +20,6 @@ class NewsController extends Controller
 
     public function index(Request $request)
     {
-        // $query = News::query();
-        // if ($request->filled('search')) {
-        //     $search = $request->search;
-        //     $query->where('category_id', 'like', '%' . $search . '%')
-        //         ->orWhere('title', 'like', '%' . $search . '%');
-        // }
-
-        // if ($request->filled('sort_by') && $request->filled('sort_order')) {
-        //     $query->orderBy($request->sort_by, $request->sort_order);
-        // }
-
-        // $news = $query->paginate(10);
-        // return view('news.list', [
-        //     'news' => $news,
-        // ]);
-
         $query = News::query();
 
         if ($request->filled('category')) {
@@ -101,24 +83,15 @@ class NewsController extends Controller
 
         $news->save();
 
-        //  // Send email to all users
-        //  $users = User::all();
-        //  foreach ($users as $user) {
-        //      Mail::to($user->email)->send(new AddNewsMail($news));
-        //  }
+        // Send email to all users
+        if ($news->published) {
+            $users = User::all();
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new AddnewsMail($news));
+            }
+        }
 
         return redirect()->route('news.index')->with('success', 'News added successfully.');
-    }
-
-    public function show(Request $request, $id)
-    {
-        $news = News::findOrFail($id);
-        $data = $news->toArray();
-
-        // Check if 'key' exists in $data array to prevent error
-        $value = $data['key'] ?? 'default_value'; // Safely access 'key'
-
-        return view('news.show', compact('value'));
     }
 
     public function edit($id)
@@ -181,4 +154,29 @@ class NewsController extends Controller
         $news->delete();
         return redirect()->route('news.index')->with('success', 'News deleted successfully.');
     }
+
+        public function show(Request $request, $id)
+    {
+        $news = News::findOrFail($id);
+        $data = $news->toArray();
+
+        // Check if 'key' exists in $data array to prevent error
+        $value = $data['key'] ?? 'default_value'; // Safely access 'key'
+
+        return view('news.show', compact('value'));
+    }
+    // public function show($id)
+    // {
+    //     // Attempt to find the news article by its ID
+    //     $news = News::find($id);
+
+    //     // Check if the news article exists
+    //     if ($news) {
+    //         // If the article exists, pass it to the view
+    //         return view('news.show', ['news' => $news]);
+    //     } else {
+    //         // If the article doesn't exist, redirect with an error message
+    //         return redirect()->route('news.index')->with('error', 'News article not found.');
+    //     }
+    // }
 }

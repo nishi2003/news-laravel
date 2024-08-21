@@ -127,7 +127,7 @@
             <tr>
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->title }}</td>
-                <td>{{ $item->category->category }}</td>
+                <td>{{ $item->category->category ?? null }}</td>
                 <td>{{ $item->description }}</td>
                 <td>{{ $item->author }}</td>
                 <td>{{ $item->tag }}</td>

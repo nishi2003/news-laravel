@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('tag')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
+
         });
     }
 

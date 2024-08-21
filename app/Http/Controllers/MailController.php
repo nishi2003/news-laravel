@@ -16,7 +16,8 @@ class MailController extends Controller
             $users = User::all();
 
             foreach ($users as $user) {
-                Mail::to($user->email)->send(new AddNewsMail($news));
+                // dd($news,$user->email);
+                Mail::to($user->email)->send(new AddnewsMail($news));
             }
 
             return 'Emails sent!';
